@@ -40,6 +40,11 @@ public class GeocodeController {
     ) throws IOException, InterruptedException, ApiException {
         var result = Arrays.stream(geocodeService.findAddresByDescription(description)).findFirst().get();
 
+        var postaCode = Arrays.stream(result.addressComponents)
+                .filter(component ->
+                        Arrays.stream(component.types).anyMatch(type -> type.name().equals("POSTAL_CODE"))
+                ).findFirst().get().longName;
+
         var point = geometryFactory.createPoint(new Coordinate(result.geometry.location.lng, result.geometry.location.lat));
         var address = new Address(result.formattedAddress,"13044500", result.placeId, point);
         addressRepository.save(address);

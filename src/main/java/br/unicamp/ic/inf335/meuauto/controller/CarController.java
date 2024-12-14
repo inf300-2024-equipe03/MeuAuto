@@ -100,20 +100,9 @@ public class CarController {
     public ResponseEntity<Object> listCarByOwner(
     ){
         var user =  (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        var cars = carService.lisCarByOwner(user);
+        var car = carService.listCarByOwner(user).stream().findFirst();
 
-        var result = cars
-                .stream()
-                .map(car -> new CompleteCarDTO(
-                        car.getValue(),
-                        car.getBrand(),
-                        car.getModelDescription(),
-                        car.getYear(),
-                        car.getFuel(),
-                        car.getId())
-                ).toList();
-
-        return ResponseEntity.ok(result);
+        return ResponseEntity.ok(car);
     }
 
 }

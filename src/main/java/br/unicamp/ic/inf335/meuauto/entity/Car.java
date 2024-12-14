@@ -11,7 +11,7 @@ import jakarta.persistence.Table;
 import java.util.UUID;
 
 @Entity
-@Table(name = "car")
+@Table(name = "cars")
 public class Car {
 
     @Id

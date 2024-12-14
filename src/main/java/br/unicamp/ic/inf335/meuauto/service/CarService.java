@@ -24,7 +24,7 @@ public class CarService {
         carRepository.save(newCar);
     }
 
-    public List<Car> lisCarByOwner(User user){
+    public List<Car> listCarByOwner(User user){
         return carRepository.findByOwner_Id(user.getId());
     }
 
