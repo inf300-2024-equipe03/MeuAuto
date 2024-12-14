@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDateTime;
+
 @RestController
 @RequestMapping("/scheduling")
 public class SchedulingController {
@@ -26,7 +28,7 @@ public class SchedulingController {
     ){
         var user =  (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        schedulingService.create(user, request.repairShopId(), request.datetime());
+        schedulingService.create(user, request.repairShopId(), LocalDateTime.now());
 
         return ResponseEntity.ok().build();
     }

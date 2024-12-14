@@ -54,7 +54,7 @@ public class CarRepairShopService {
 
     public List<CarRepairShop> listCarRepairShopNearUser(String userLocationDescription) throws IOException, InterruptedException, ApiException {
         var googleAddress = Arrays.stream(
-                        geocodeService.findAddresByDescription(userLocationDescription)
+                        geocodeService.findAddresByPostalCode(userLocationDescription)
                 ).findFirst()
                 .get();
 
@@ -67,7 +67,7 @@ public class CarRepairShopService {
         var address = new Address(googleAddress.formattedAddress,postaCode, googleAddress.placeId, point);
 
 
-        var addresses = addressRepository.findNearbyPlaces(address, 10, 0);
+        var addresses = addressRepository.findNearbyPlaces(address, 0, 7);
         var addressesIds = addresses.stream().map(Address::getId).toList();
 
         var result = carRepairShopRepository.findByAddessIdIn(addressesIds);

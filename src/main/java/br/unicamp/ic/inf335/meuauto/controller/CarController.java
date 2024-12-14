@@ -1,9 +1,12 @@
 package br.unicamp.ic.inf335.meuauto.controller;
 
 import br.unicamp.ic.inf335.meuauto.dto.BrandResponseDTO;
+import br.unicamp.ic.inf335.meuauto.dto.CarRequest;
+import br.unicamp.ic.inf335.meuauto.dto.CarResponse;
 import br.unicamp.ic.inf335.meuauto.dto.CompleteCarDTO;
 import br.unicamp.ic.inf335.meuauto.dto.ModelResponseDTO;
 import br.unicamp.ic.inf335.meuauto.dto.VersionResponseDTO;
+import br.unicamp.ic.inf335.meuauto.entity.Car;
 import br.unicamp.ic.inf335.meuauto.entity.User;
 import br.unicamp.ic.inf335.meuauto.integration.tabelafipe.TabelaFipeService;
 import br.unicamp.ic.inf335.meuauto.service.CarService;
@@ -88,7 +91,7 @@ public class CarController {
 
     @PostMapping
     public ResponseEntity<Object> createCar(
-            @RequestBody CompleteCarDTO car
+            @RequestBody CarRequest car
     ){
         var user =  (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         carService.createCar(user, car);
@@ -97,12 +100,16 @@ public class CarController {
     }
 
     @GetMapping
-    public ResponseEntity<Object> listCarByOwner(
+    public ResponseEntity<CarResponse> listCarByOwner(
     ){
         var user =  (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        var car = carService.listCarByOwner(user).stream().findFirst();
+        var car = carService.listCarByOwner(user).stream().findFirst().orElse(null);
 
-        return ResponseEntity.ok(car);
+        if(car != null){
+            var response = new CarResponse(car.getId(), car.getValue(), car.getBrand(), car.getModelDescription(), car.getYear(), car.getFuel(), car.getOwner().getId());
+            return ResponseEntity.ok(response);
+        }
+        return ResponseEntity.ok(null);
     }
 
 }

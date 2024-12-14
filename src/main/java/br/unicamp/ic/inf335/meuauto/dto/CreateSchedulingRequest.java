@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 public record CreateSchedulingRequest(
-        LocalDateTime datetime,
+        String datetime,
         UUID repairShopId
 ) {
 }

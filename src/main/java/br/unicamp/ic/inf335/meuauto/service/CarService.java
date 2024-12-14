@@ -1,5 +1,6 @@
 package br.unicamp.ic.inf335.meuauto.service;
 
+import br.unicamp.ic.inf335.meuauto.dto.CarRequest;
 import br.unicamp.ic.inf335.meuauto.dto.CompleteCarDTO;
 import br.unicamp.ic.inf335.meuauto.entity.Car;
 import br.unicamp.ic.inf335.meuauto.entity.User;
@@ -18,7 +19,7 @@ public class CarService {
         this.carRepository = carRepository;
     }
 
-    public void createCar(User user, CompleteCarDTO carRequest){
+    public void createCar(User user, CarRequest carRequest){
         var newCar = new Car(UUID.randomUUID(), carRequest.value(), carRequest.brand(), carRequest.modelName(), carRequest.year(), carRequest.fuel(), user);
 
         carRepository.save(newCar);
